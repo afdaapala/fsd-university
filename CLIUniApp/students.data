@@ -1,0 +1,23 @@
+[
+    {
+        "student_id": 10430,
+        "name": "amar",
+        "email": "email",
+        "password": "pass",
+        "subjects": []
+    },
+    {
+        "student_id": 27302,
+        "name": "amar",
+        "email": null,
+        "password": "password",
+        "subjects": []
+    },
+    {
+        "student_id": 30426,
+        "name": "amar",
+        "email": null,
+        "password": "pass",
+        "subjects": []
+    }
+]
