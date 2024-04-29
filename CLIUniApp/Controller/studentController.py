@@ -17,6 +17,7 @@ class StudentController:
         except FileNotFoundError:
             with open('students.data', 'w') as file:
                 json.dump([new_student], file, indent=4)
+                print("amar")
 
     @staticmethod
     def getInputName():
