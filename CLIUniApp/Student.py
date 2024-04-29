@@ -15,7 +15,7 @@ class Student:
     def load_subjects(self):
         # Load subjects from 'students.data'
         try:
-            with open('students.data', 'r') as file:
+            with open('Storage/students.data', 'r') as file:
                 students_data = json.load(file)
                 for student in students_data:
                     if student['email'] == self.email:
