@@ -1,8 +1,34 @@
 import hashlib
+
 class Admin:
     def __init__(self):
         self.__admin_email = "admin@example.com"
         self.__admin_password = self.hashPassword("admin123")
+
+    def showAdminMenu(self):
+        # Show admin menu
+        while True:
+            choice = input("Admin system (c/g/p/r/s/x): ")
+            if choice == 'c':
+                print("d")
+                # clear database file
+            elif choice == 'g':
+                print("d")
+                # group students
+            elif choice == 'p':
+                print("d")
+                # partition students
+            elif choice == 'r':
+                print("d")
+                    # remove student
+            elif choice == 's':
+                print("d")
+                # show
+            elif choice == 'x':
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
 
     def getInputEmail(self):
         return input("Enter admin email: ")

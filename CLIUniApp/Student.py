@@ -11,6 +11,55 @@ class Student:
         self.password = password
         self.subjects = self.load_subjects()
         
+    def showStudentMenu(self, students):
+        # Show student menu
+        while True:
+            choice = input("Student system (l/r/x): ")
+            if choice == 'l':
+                email = Student.getInputEmail()
+                password = Student.getInputPassword()
+                student = self.findStudentByEmail(email)
+                if student and student['password'] == password:
+                    print(f"Welcome {student['name']}!")
+                    # Show student options after successful login
+                    self.showStudentCourseMenu()
+                else:
+                    print("Invalid credentials.")
+            elif choice == 'r':
+                # student registration import from Student.py
+                name = Student.getInputName()
+                email = Student.getInputEmail()
+                password = Student.getInputPassword()
+                student.registerStudent(name, email, password)
+                
+            elif choice == 'x':
+                print('Thank you')
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+    def showStudentCourseMenu(self):
+        while True:
+            choice = input("Student Course Menu (c/e/r/s/x): ")
+            if choice == 'c':
+                # change
+                print('3')
+            elif choice == 'e':
+                # enrol
+                print('3')
+            elif choice == 'r':
+                # remove 
+                print('3')
+            elif choice == 's':
+                # show
+                print('3')
+            elif choice == 'x':
+                # exit
+                print('3')
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
 
     def load_subjects(self):
         # Load subjects from 'students.data'
@@ -24,11 +73,12 @@ class Student:
             return []
         return []
 
+# consider it may not be staticmethod
     @staticmethod
     def registerStudent(name, email, password):
         # Register a new student in 'students.data'
         new_student = {
-            "student_id": Student.generateStudentId(),  # Generate a random student ID between 10000 and 99999
+            # "student_id": self.generateStudentId(),  # Generate a random student ID between 10000 and 99999
             "name": name,
             "email": email,
             "password": password,
@@ -143,3 +193,10 @@ class Student:
                 file.truncate()
         except FileNotFoundError:
             print("Error: 'students.data' file not found.")
+            
+    def findStudentByEmail(self, email):
+    # Find a student by email
+        for student in self.students:
+            if student['email'] == email:
+                return student
+        return None
