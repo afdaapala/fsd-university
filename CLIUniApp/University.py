@@ -1,26 +1,25 @@
-from Admin import Admin
-from Student import Student
-from Database import Database
-import Subjects
+from Color import Color
+from Controller.studentController import StudentController
+from Controller.AdminController import AdminController
 
 class University:
     def __init__(self):
-        database = Database()
-        self.students = database.load_students()  # Load student list from the student.data
+        self.studentController = StudentController()
+        self.studentController.initializeStudentData()
+        # Load students data
+        self.students = self.studentController.readStudentData()
+        self.adminController = AdminController(self.students)
 
     def main(self):
         # Main method to run the university system
-        admin = Admin()
-        student = Student('testName', 'testEmail', 'testPassword');
-
         while True:
-            choice = input("University System: (A)dmin (S)tudent, or X: ")
+            choice = input(Color.CYAN + "University System: (A)dmin (S)tudent, or X: " + Color.DEFAULT)
             if choice == 'A':
-                admin.showAdminMenu()
+                self.adminController.showAdminMenu()
             elif choice == 'S':
-                student.showStudentMenu(self.students)
+                pass
             elif choice == 'X':
-                print('Thank you')
+                print(Color.YELLOW + "Thank You" + Color.DEFAULT)
                 break
             else:
                 print("Invalid choice. Please try again.")
