@@ -1,5 +1,6 @@
 from Color import Color
 from Database import Database
+from Admin import Admin
 
 #for dummy
 import random
@@ -7,85 +8,33 @@ from Subjects import Subjects
 
 class AdminController:
     def __init__(self, students) -> None:
+        self.admin = Admin()
         self.students = students
-        self.listOfGrade = ['Z','P','C','D','HD']
 
     def showAdminMenu(self):
         # Show admin menu
         while True:
+            # Get input from user
             choice = input(Color.CYAN + "\tAdmin system (c/g/p/r/s/x): " + Color.DEFAULT)    
+
             if choice == 'c':
-                # clear database file
-                print(Color.YELLOW + "\tClearing students database" + Color.DEFAULT)
-                while(1==1):
-                    subchoice = input(Color.RED + "\tAre you sure you want to clear the database (Y)ES/(N)O: " + Color.DEFAULT)  
-                    if subchoice == 'Y':
-                        Database.clear()
-                        self.students.clear()
-                        print(Color.YELLOW + "\tStudents data cleared" + Color.DEFAULT)
-                        break
-                    elif subchoice == 'N':
-                        break
+                isCleared = self.admin.removeAllStudents(self.students)
+                if isCleared:
+                    Database.clear()
     
             elif choice == 'g':
-                # group students
-                print(Color.YELLOW + "\tGrade Grouping" + Color.DEFAULT)
-                if self.students.__len__() > 0:
-                    for grade in self.listOfGrade:
-                        studentInGrade = ''
-                        for student in self.students:
-                            if student.calculateGrade() == grade:
-                                if studentInGrade != '':
-                                    studentInGrade += ', ' + student.studentGrade()
-                                else:
-                                    studentInGrade += student.studentGrade()
-                        if studentInGrade is not '':
-                            print(f'\t{grade.ljust(2)} --> [{studentInGrade}]')
-                else:
-                    emptyData = '\t\t< Nothing to Display >'
-                    print(Color.DEFAULT +  emptyData + Color.DEFAULT)
+                self.admin.viewStudentsbyGrade(self.students)
 
             elif choice == 'p':
-                # partition students
-                print(Color.YELLOW + "\tPASS/FAIL Partition" + Color.DEFAULT)
-                partPass = ''
-                partFail = ''
-                for student in self.students:
-                    if student.calculateGrade() == 'Z':
-                        if partFail != '':
-                            partFail += ', ' + student.studentGrade()
-                        else:
-                            partFail += student.studentGrade()
-                    else:
-                        if partPass != '':
-                            partPass += ', ' + student.studentGrade()
-                        else:
-                            partPass += student.studentGrade()
-                # print out
-                print(Color.DEFAULT + f'\tFAIL --> [{partFail}]' + Color.DEFAULT)
-                print(Color.DEFAULT + f'\tPASS --> [{partPass}]' + Color.DEFAULT)
+                self.admin.viewStudentsbyCategories(self.students)
 
             elif choice == 'r':
-                # remove student
-                remStudentId = input(Color.DEFAULT + "\tRemove by ID: " + Color.DEFAULT)
-                remStudent = self.findStudentById(remStudentId)
-                if remStudent is not None:
-                    self.students.remove(remStudent)
+                isRemoved = self.admin.removeStudent(self.students)
+                if isRemoved:
                     Database.write(self.students)
-                    print(Color.YELLOW + f'\tRemoving Student {remStudentId} Account' + Color.DEFAULT)
-                else:
-                    print(Color.RED + f'\tStudent {remStudentId} does not exist' + Color.DEFAULT)
-
 
             elif choice == 's':
-                # show student
-                print(Color.YELLOW + "\tStudent List" + Color.DEFAULT)
-                if self.students.__len__() > 0:
-                    for student in self.students:
-                        print(student)
-                else:
-                    emptyData = '\t\t< Nothing to Display >'
-                    print(Color.DEFAULT +  emptyData + Color.DEFAULT)
+                self.admin.viewStudents(self.students)
 
             elif choice == 'x':
                 break
@@ -97,19 +46,13 @@ class AdminController:
                 Database.write(self.students)
             else:
                 print("\tInvalid choice. Please try again.")
-    
-    def findStudentById(self, id):
-        for s in self.students:
-            if s.match(id):
-                return s
-        return None
 
 
 class StudentDummy:
     def __init__(self) -> None:
         randStr = f"{random.randint(0, 999):03}"
         self.studentid = randStr
-        self.name = 'Student ' + randStr
+        self.name = 'This is name of student ' + randStr
         self.email = self.name + '@university.com'
         self.password = 'pass'
         self.subjects = []
