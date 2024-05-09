@@ -10,7 +10,6 @@ from Subjects import Subjects
 class AdminController:
     def __init__(self) -> None:
         # Load students data
-        self.students = Database.read()
         self.admin = Admin()
 
     def showAdminMenu(self):
@@ -20,32 +19,38 @@ class AdminController:
             choice = input(Color.CYAN + "\tAdmin system (c/g/p/r/s/x): " + Color.DEFAULT)    
 
             if choice == 'c':
-                isCleared = self.admin.removeAllStudents(self.students)
+                students = Database.read()
+                isCleared = self.admin.removeAllStudents(students)
                 if isCleared:
                     Database.clear()
     
             elif choice == 'g':
-                self.admin.viewStudentsbyGrade(self.students)
+                students = Database.read()
+                self.admin.viewStudentsbyGrade(students)
 
             elif choice == 'p':
-                self.admin.viewStudentsbyCategories(self.students)
+                students = Database.read()
+                self.admin.viewStudentsbyCategories(students)
 
             elif choice == 'r':
-                isRemoved = self.admin.removeStudent(self.students)
+                students = Database.read()
+                isRemoved = self.admin.removeStudent(students)
                 if isRemoved:
-                    Database.write(self.students)
+                    Database.write(students)
 
             elif choice == 's':
-                self.admin.viewStudents(self.students)
+                students = Database.read()
+                self.admin.viewStudents(students)
 
             elif choice == 'x':
                 break
 
             #dummy purpose
             elif choice == 'd':
+                students = Database.read()
                 for a in range(0,5):
-                    self.students.append(StudentDummy())
-                Database.write(self.students)
+                    students.append(StudentDummy())
+                Database.write(students)
 
             else:
                 print(Color.RED + "\tInvalid choice. Please try again." + Color.DEFAULT)

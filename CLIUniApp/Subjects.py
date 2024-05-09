@@ -31,5 +31,5 @@ class Subjects:
             return 'F'
 
 # Example usage:
-subject = Subjects()
-print(f"Subject ID: {subject.subjectID}, Mark: {subject.mark}, Grade: {subject.grade}, Category: {subject.category}")
+#subject = Subjects()
+#print(f"Subject ID: {subject.subjectID}, Mark: {subject.mark}, Grade: {subject.grade}, Category: {subject.category}")

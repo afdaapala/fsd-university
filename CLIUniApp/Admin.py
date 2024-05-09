@@ -28,7 +28,7 @@ class Admin:
                             studentInGrade += ', ' + student.studentGrade()
                         else:
                             studentInGrade += student.studentGrade()
-                if studentInGrade is not '':
+                if studentInGrade != '':
                     str = (f'\t{grade.ljust(2)} --> [{studentInGrade}]')
                     wrapper = textwrap.TextWrapper(subsequent_indent='\t\t',width=115) 
                     string = wrapper.fill(text=str)

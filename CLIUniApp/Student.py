@@ -2,6 +2,7 @@ import json
 import re
 import random
 import Subjects
+from Color import Color
 
 
 class Student:
@@ -200,3 +201,47 @@ class Student:
             if student['email'] == email:
                 return student
         return None
+
+class StudentDummy:
+    def __init__(self) -> None:
+        randStr = f"{random.randint(0, 999):03}"
+        self.studentid = randStr
+        self.name = 'This is name of student ' + randStr
+        self.email = self.name + '@university.com'
+        self.password = 'pass'
+        self.subjects = []
+        for a in range(0,4):
+            self.subjects.append(Subjects.Subjects())
+
+    def __str__(self) -> str:
+        return Color.DEFAULT + f'\t{self.name} :: {self.studentid} --> Email: {self.email}' + Color.DEFAULT
+    
+    def studentGrade(self) -> str:
+        return f'{self.name} :: {self.studentid} --> GRADE: {self.calculateGrade()} - MARK: {self.calculateMark():.2f}'
+    
+    def calculateGrade(self) -> str:
+        grade = '-'
+        averageMark = self.calculateMark()
+        if averageMark < 50:
+            grade = 'Z'
+        elif averageMark >= 50 and averageMark < 65:
+            grade = 'P'
+        elif averageMark >= 65 and averageMark < 75:
+            grade = 'C'
+        elif averageMark >= 75 and averageMark < 85:
+            grade = 'D'
+        elif averageMark >= 85:
+            grade = 'HD'
+        return grade
+
+    def calculateMark(self) -> int:
+        total = 0
+        average = 0
+        if self.subjects != None and self.subjects.__len__() > 0:
+            for subject in self.subjects:
+                total += subject.mark
+            average = total / self.subjects.__len__()
+        return average
+    
+    def match(self, studentId):
+        return self.studentid == studentId
