@@ -58,7 +58,7 @@ class Admin:
         str = f'\tFAIL --> [{partFail}]'
         wrapper = textwrap.TextWrapper(subsequent_indent='\t\t  ',width=115) 
         string = wrapper.fill(text=str)
-        # print(Color.DEFAULT +  string + Color.DEFAULT)
+        print(Color.DEFAULT +  string + Color.DEFAULT)
 
         str = f'\tPASS --> [{partPass}]'
         wrapper = textwrap.TextWrapper(subsequent_indent='\t\t  ',width=115) 
