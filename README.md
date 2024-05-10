@@ -1,5 +1,5 @@
 # Assessment 2 – Part 2: Software Development
-- Our due date: 9th May 2024
+- Our due date: 10th May 2024
 - due date: 20th May 2024
 - Student : Kim, Jiyoung
 - Admin: Rianto, Amar
