@@ -2,14 +2,15 @@
 from Controllers.adminController import adminController
 from Controllers.studentController import studentController
 from Styles.Style import textColors
-
+from Models.Database import Database
 class University:
     def main(self):
         # Main method to run the university system
+        Database.initialize()
         admin = adminController()
         student = studentController()
         while True:
-            choice = input(f"{textColors.CYAN} University System: (A)dmin (S)tudent, or X: {textColors.DEFAULT}")
+            choice = input(f"{textColors.CYAN}University System: (A)dmin (S)tudent, or X: {textColors.DEFAULT}")
             if choice == 'A':
                 admin.showAdminMenu()
             elif choice == 'S':

@@ -3,7 +3,7 @@ import os
 
 class Database:
     
-    filename = 'Storage/students.data'
+    filename = '../Storage/students.data'
 
     @staticmethod
     def initialize():

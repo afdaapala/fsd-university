@@ -1,4 +1,3 @@
-import pickle as pk
 import re
 import random
 from Models.Subject import Subject
@@ -12,17 +11,18 @@ class Student:
     # Password regex pattern
     password_pattern = r'^[A-Z][a-zA-Z]{5,}[0-9]{3,}$'
     
-    def __init__(self, student):
-        self.id = student['id']
-        self.name = student['name']
-        self.email = student['email']
-        self.password = student['password']
-        self.subjects = self.formatSubjects(student['subjects'])
         
+    def __init__(self, id, name, email, password) :
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password
+        self.subjects = []
+    
     @staticmethod
     def isExistingId(id):
         for student in Database.read():
-            if student['id'] == id:
+            if student.id == id:
                 return True
         return False
     
@@ -33,7 +33,8 @@ class Student:
             return Student.generateId()
         return newStudentId
         
-    def registerStudent(self):
+    @staticmethod
+    def registerStudent():
         print(f"{textColors.GREEN}\tStudent Sign Up{textColors.DEFAULT}")
 
         email = input("\tEmail: ")
@@ -46,29 +47,24 @@ class Student:
 
         print(f"{textColors.YELLOW}\temail and password formats acceptable{textColors.DEFAULT}")
 
-        registeredStudent = Database.findStudentByEmail(email)
+        registeredStudent = Student.findStudentByEmail(email)
         if registeredStudent != None:
-            print(f"{textColors.RED}\tStudent {str(registeredStudent['name']).title()} already exists{textColors.DEFAULT}")
+            print(f"{textColors.RED}\tStudent {str(registeredStudent.name).title()} already exists{textColors.DEFAULT}")
         else:
             name = input("\tName: ")
             print(f"{textColors.YELLOW}\tEnrolling Student {name}{textColors.DEFAULT}")
-            self.insertRegisterStudent({
-                "id": Student.generateId(),
-                "email": email,
-                "password": password,
-                "name": name,
-                "subjects": []
-            })
+            Student.insertRegisterStudent(Student(Student.generateId(), name, email, password))
             
     @staticmethod
     def findStudentByEmail(email):
         students = Database.read()
         for student in students:
-            if student['email'] == email:
+            if student.email == email:
                 return student
         return None
 
-    def insertRegisterStudent(self, student):
+    @staticmethod
+    def insertRegisterStudent(student):
         students = Database.read()
         students.append(student)
         Database.write(students)
@@ -77,8 +73,8 @@ class Student:
     def updatePassword(id, newPassword):
         students = Database.read()
         for student in students:
-            if student['id'] == id:
-                student['password'] = newPassword
+            if student.id == id:
+                student.password = newPassword
                 break
         Database.write(students)
     
@@ -110,11 +106,10 @@ class Student:
         if registeredStudent == None:
             print(f"{textColors.RED}\tStudent does not exist{textColors.DEFAULT}")
         else:
-            if registeredStudent['password'] != password:
+            if registeredStudent.password != password:
                 print(f"{textColors.RED}\tStudent does not exist{textColors.DEFAULT}")
             else :
-                return Student(registeredStudent)
-                # controller.showStudentCourseMenu(student)
+                return registeredStudent
 
     def showSubjects(self):
         print(f"{textColors.YELLOW}\t\tShowing {len(self.subjects)} subjects{textColors.DEFAULT}")
@@ -133,12 +128,6 @@ class Student:
         print(f"{textColors.YELLOW}\t\tYou are now enrolled in {len(self.subjects)} out of 4 subjects{textColors.DEFAULT}")
 
         return subject
-
-    def formatSubjects(self, subjects):
-        newSubjects = []
-        for subject in subjects:
-            newSubjects.append(Subject(subject['id'], subject['mark'], subject['grade']))
-        return newSubjects
     
     def isPass(self):
         return self.getAverageMark() >= 50
@@ -179,10 +168,10 @@ class Student:
         Student.updatePassword(self.id, newPassword)
         
     def __str__(self) -> str:
-        return textColors.DEFAULT + f'\t{self.name} :: {self.studentid} --> Email: {self.email}' + textColors.DEFAULT
+        return textColors.DEFAULT + f'\t{self.name} :: {self.id} --> Email: {self.email}' + textColors.DEFAULT
     
     def studentGrade(self) -> str:
-        return f'{self.name} :: {self.studentid} --> GRADE: {self.calculateGrade()} - MARK: {self.calculateMark():.2f}'
+        return f'{self.name} :: {self.id} --> GRADE: {self.calculateGrade()} - MARK: {self.calculateMark():.2f}'
     
     def calculateGrade(self) -> str:
         grade = '-'
@@ -208,5 +197,5 @@ class Student:
             average = total / self.subjects.__len__()
         return average
     
-    def match(self, studentId):
-        return self.studentid == studentId
+    def match(self, id):
+        return self.id == id
