@@ -1,4 +1,4 @@
-from Models.Database import Database
+from Database import Database
 from Styles.Style import textColors
 import pickle
 import textwrap

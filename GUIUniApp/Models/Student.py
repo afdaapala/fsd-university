@@ -1,14 +1,17 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter.messagebox import showerror
 import re
+from Models.Subject import Subject
+from Styles.NewWindow import NewWindow
+from Models.Database import Database
 
 class StudentGUI:
-    def __init__(self):
-      # Email regex pattern
-      self.email_pattern = r'^[a-z]+\.+[a-z]+@university\.com$'
-      
-      # Password regex pattern
-      self.password_pattern = r'^[A-Z][a-zA-Z]{5,}[0-9]{3,}$'
+    def __init__(self, student):
+        self.id = student['id']
+        self.name = student['name']
+        self.email = student['email']
+        self.password = student['password']
+        self.subjects = self.formatSubjects(student['subjects'])
 
     @staticmethod
     def viewMenu():
@@ -35,6 +38,14 @@ class StudentGUI:
         root.mainloop()
 
     @staticmethod
+    def findStudentByEmail(email):
+        students = Database.read()
+        for student in students:
+            if student['email'] == email:
+                return student
+        return None
+
+    @staticmethod
     def inputLogin(): 
         root=tk.Tk()
         root.geometry("500x200")
@@ -56,83 +67,82 @@ class StudentGUI:
                               font='Helvetica 12 bold', bg="#323232")
         passwordLbl.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
 
-        emailText = tk.StringVar()
-        emailField = tk.Entry(box, textvariable=emailText)
+        email = tk.StringVar()
+        emailField = tk.Entry(box, textvariable=email)
         emailField.grid(column=1, row=0, padx=5, pady=5)
         emailField.focus()
 
-        passwordTxt = tk.StringVar()
-        passwordField = tk.Entry(box, textvariable=passwordTxt, show="*")
+        password = tk.StringVar()
+        passwordField = tk.Entry(box, textvariable=password, show="*")
         passwordField.grid(column=1, row=1, padx=5, pady=5)
 
         cancelBtn = tk.Button(box, text="Cancel", command=lambda: root.destroy())
         cancelBtn.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
+        
+        
+        def isValidEmail():
+            email_pattern = r'^[a-z]+\.+[a-z]+@university\.com$'
+            return re.match(email_pattern, email.get()) is not None
 
+        # def isValidPassword():
+        #     password_pattern = r'^[A-Z][a-zA-Z]{5,}[0-9]{3,}$'
+        #     return re.match(password_pattern, password.get()) is not None
+
+        def clear():
+            emailField.delete(0, tk.END)
+            passwordField.delete(0, tk.END)
 
         def login():
-           print("login success")
+            registeredStudent = StudentGUI.findStudentByEmail(email)
+            
+            if(not email and not password):
+                info = "Empty login fields"
+                showerror(title="Login Error", message = info)
+                clear()
+            elif registeredStudent == None:
+                info = "Incorrect student credentials"
+                showerror(title="Login Error", message = info)
+                clear()
+            elif (isValidEmail()):
+                info = "Incorrect email format"
+                showerror(title="Login Error", message = info)
+                clear()     
+            else : 
+                StudentGUI.showSubjects()
+                NewWindow(root, "Correct email or password")      
+                clear()   
         
         loginBtn = tk.Button(box, text="Login", command=login)
         loginBtn.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
 
         root.mainloop()
-  
-        # registered_student = Student.find_student_by_email(email)
-        # if registered_student is None:
-        #     messagebox.showerror("Error", "Student does not exist")
-        #     return
-        # else:
-        #     if registered_student['password'] != password:
-        #         messagebox.showerror("Error", "Incorrect password")
-        #         return
-        #     else:
-        #         messagebox.showinfo("Success", "Login successful!")
-        #         # Call your next function here, e.g., show_subjects()
-
-    def register(self):
-        email = self.email_entry.get()
-        password = self.password_entry.get()
-        if not (self.is_valid_email(self, email) and self.is_valid_password(password)):
-            messagebox.showerror("Error", "Incorrect email or password format")
-            return
-
-        name = input("Name: ")  # You can add a name entry in the GUI as well
-        # Student.register_student({
-        #     "id": Student.generate_id(),
-        #     "email": email,
-        #     "password": password,
-        #     "name": name,
-        #     "subjects": []
-        # })
-        messagebox.showinfo("Success", "Registration successful!")
-
-    def change_password(self):
-        email = self.email_entry.get()
-        password = self.password_entry.get()
-        if not (self.is_valid_email(self, email) and self.is_valid_password(self, password)):
-            messagebox.showerror("Error", "Incorrect email or password format")
-            return
-
-        new_password = input("New Password: ")  # You can add a new password entry in the GUI as well
-        if not self.is_valid_password(self, new_password):
-            messagebox.showerror("Error", "Incorrect password format")
-            return
-
-        new_password_confirm = input('Confirm Password: ')
-        if new_password != new_password_confirm:
-            messagebox.showerror("Error", "Passwords do not match")
-            return
-
-        # Student.change_password(email, new_password)
-        messagebox.showinfo("Success", "Password changed successfully!")
-
+        
     @staticmethod
-    def is_valid_email(self, email):
-        return re.match(self.email_pattern, email) is not None
+    def showSubjects(self):
+        root=tk.Tk()
+        root.geometry("500x300")
+        root.title("Enrol Subject")
+        root.configure(bg="#323232")
+        root.resizable(False, False)
+        subjects = self.subjects
+        listVar = tk.Variable(value=subjects)
+        subjectList = tk.Listbox(root, listvariable=listVar)
+        subjectList.pack(fill=tk.BOTH, expand=True, padx=20, pady=40)
 
-    @staticmethod
-    def is_valid_password(self, password):
-        return re.match(self.password_pattern, password) is not None
+        root.mainloop()
+
+    def enrollSubject(self):
+        if len(self.subjects) == 4:
+            info = "Students are allowed to enrol in 4 subjects only"
+            showerror(title="Confirmation", message = info)
+            return None
+    
+        subject = Subject.generateSubject()
+        self.subjects.append(subject)
+
+        return subject
+
+        
 
     
 student = StudentGUI
