@@ -15,8 +15,8 @@ class Subject:
     @staticmethod
     def isExistingId(id):
         for student in Database.read():
-            for subject in student['subjects']:
-                if subject['id'] == id:
+            for subject in student.subjects:
+                if subject.id == id:
                     return True
         return False
 

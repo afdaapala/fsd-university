@@ -6,12 +6,12 @@ from Styles.NewWindow import NewWindow
 from Models.Database import Database
 
 class StudentGUI:
-    def __init__(self, student):
-        self.id = student['id']
-        self.name = student['name']
-        self.email = student['email']
-        self.password = student['password']
-        self.subjects = self.formatSubjects(student['subjects'])
+    def __init__(self, id, name, email, password) :
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password
+        self.subjects = []
 
     @staticmethod
     def viewMenu():
@@ -39,9 +39,11 @@ class StudentGUI:
 
     @staticmethod
     def findStudentByEmail(email):
+
         students = Database.read()
+        print("students>>>>",students)
         for student in students:
-            if student['email'] == email:
+            if student.email == email:
                 return student
         return None
 
@@ -79,7 +81,7 @@ class StudentGUI:
         cancelBtn = tk.Button(box, text="Cancel", command=lambda: root.destroy())
         cancelBtn.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
         
-        
+        print(">>>>>>>>>>",email, email.get())
         def isValidEmail():
             email_pattern = r'^[a-z]+\.+[a-z]+@university\.com$'
             return re.match(email_pattern, email.get()) is not None
@@ -93,9 +95,10 @@ class StudentGUI:
             passwordField.delete(0, tk.END)
 
         def login():
-            registeredStudent = StudentGUI.findStudentByEmail(email)
-            
-            if(not email and not password):
+            print("email:", email, email.get())
+            registeredStudent = StudentGUI.findStudentByEmail(email.get())
+            print("registeredStudent: ", registeredStudent)
+            if(not email.get() and not password.get()):
                 info = "Empty login fields"
                 showerror(title="Login Error", message = info)
                 clear()
@@ -119,17 +122,18 @@ class StudentGUI:
         
     @staticmethod
     def showSubjects(self):
-        root=tk.Tk()
-        root.geometry("500x300")
-        root.title("Enrol Subject")
-        root.configure(bg="#323232")
-        root.resizable(False, False)
-        subjects = self.subjects
-        listVar = tk.Variable(value=subjects)
-        subjectList = tk.Listbox(root, listvariable=listVar)
-        subjectList.pack(fill=tk.BOTH, expand=True, padx=20, pady=40)
+        print("show subject")
+        # root=tk.Tk()
+        # root.geometry("500x300")
+        # root.title("Enrol Subject")
+        # root.configure(bg="#323232")
+        # root.resizable(False, False)
+        # subjects = self.subjects
+        # listVar = tk.Variable(value=subjects)
+        # subjectList = tk.Listbox(root, listvariable=listVar)
+        # subjectList.pack(fill=tk.BOTH, expand=True, padx=20, pady=40)
 
-        root.mainloop()
+        # root.mainloop()
 
     def enrollSubject(self):
         if len(self.subjects) == 4:

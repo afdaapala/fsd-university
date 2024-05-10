@@ -2,8 +2,8 @@ import pickle
 import os
 
 class Database:
-    
-    filename = 'Storage/students.data'
+    current_directory = os.getcwd()
+    filename = current_directory + "/Storage/student.data"
 
     @staticmethod
     def initialize():
