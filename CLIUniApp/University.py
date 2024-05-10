@@ -10,7 +10,7 @@ class University:
         admin = Admin()
 
         while True:
-            choice = input("University System: (A)dmin (S)tudent, or X: ")
+            choice = input("\033[34mUniversity System: (A)dmin (S)tudent, or X: \033[0m")
             if choice == 'A':
                 admin.showAdminMenu()
             elif choice == 'S':
