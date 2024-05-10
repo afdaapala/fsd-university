@@ -1,102 +1,49 @@
 import pickle as pk
 from Styles.Style import textColors
 from Models.Student import Student
+from Models.Database import Database
 from Controllers.subjectController import subjectController
-import random
-import re
-import os
 
 class studentController:
-    def showStudentMenu(self):
-        # Show student menu
+    @staticmethod
+    def showStudentMenu():
         while True:
-            choice = input(f"{textColors.cyan}\tStudent System (l/r/x): {textColors.reset}")
+            choice = input(f"{textColors.CYAN}\tStudent system (l/r/x): {textColors.DEFAULT}")
             if choice == 'l':
-                print(f"{textColors.green}\tStudent Sign In{textColors.reset}")
-                while True:
-                    email = input("\tEmail: ")
-                    password = input("\tPassword: ")
-                    if not (Student.getInputEmail(email) and Student.getInputPassword(password)):
-                        print(f"{textColors.red}\tIncorrect email or password format{textColors.reset}")
-                        continue
-                    elif Student.getInputEmail(email) and Student.getInputPassword(password):
-                        print(f"{textColors.yellow}\temail and password formats acceptable{textColors.reset}")
-                        findStudent = Student.findStudentByEmail(email)
-                        if findStudent is None:
-                            print(f"{textColors.red}\tStudent {findStudent} does not exist{textColors.reset}")
-                            break
-                        else:
-                            login = Student.login(email, password)
-                            if login == True:
-                                print(f"{textColors.green}\tStudent {findStudent} logged in{textColors.reset}")
-                                self.showStudentCourseMenu(findStudent, email, password)
-                                break
-                                
-                            
+                student = Student.login()
+                if student is not None:
+                    studentController.showStudentCourseMenu(student)
                     
             elif choice == 'r':
-                # student registration
-                print(f"{textColors.green}\tStudent Sign Up{textColors.reset}")
-                while True:
-                    email = input("\tEmail: ")
-                    password = input("\tPassword: ")
-                    if not (Student.getInputEmail(email) and Student.getInputPassword(password)):
-                        print(f"{textColors.red}\tIncorrect email or password format{textColors.reset}")
-                        continue
-                    elif Student.getInputEmail(email) and Student.getInputPassword(password):
-                        print(f"{textColors.yellow}\temail and password formats acceptable{textColors.reset}")
-                        findStudent = Student.findStudentByEmail(email)
-                        if findStudent is not None:
-                            print(f"{textColors.red}\tStudent {findStudent} already exists{textColors.reset}")
-                            break  
-                        else:
-                            name = input("\tName: ")
-                            name = Student.getInputName(name)
-                            Student.registerStudent(name, email, password)
-                            print(f"{textColors.green}\tEnrolling Student {name}{textColors.reset}")
-                            break
-                            # except:
-                            #     print(f"{textColors.red}\tFailed to enroll student {name}{textColors.reset}")
-                            #     break
-                            
-                    
+                Student.registerStudent()
             elif choice == 'x':
                 break
             else:
-                print(f"{textColors.yellow}Invalid choice. Please try again.{textColors.reset}")
+                print(f"{textColors.RED}\tInvalid choice. Please try again.{textColors.DEFAULT}")
 
-    def showStudentCourseMenu(self, name, email, password):
-        currentStudent = Student(name, email, password)
-        subjectView = subjectController()
+    @staticmethod
+    def showStudentCourseMenu(student):
         while True:
-            choice = input(f"{textColors.cyan}\t\tStudent Course Menu (c/e/r/s/x): {textColors.reset}")
+            choice = input(f"{textColors.CYAN}\t\tStudent Course Menu (c/e/r/s/x): {textColors.DEFAULT}")
             if choice == 'c':
-                # change password
-                print(f"{textColors.yellow}\t\tUpdating Password{textColors.reset}")
-                while True:
-                    new_password = input("\t\tNew Password: ")
-                    confirm_new_password = input("\t\tConfirm New Password: ")
-                    if new_password == confirm_new_password:
-                        currentStudent.changePassword(new_password)
-                        print(f"{textColors.yellow}\t\tUpdating Password{textColors.reset}")
-                        break
-                    else:
-                        print(f"{textColors.red}\t\tPasswords does not match - try again{textColors.reset}")
-                        continue
-                
+                # change
+                student.changePassword()
             elif choice == 'e':
-                # enroll 1 subject
-                subjectView.enrolSubject(currentStudent)
+                # enrol
+                subject = student.enrollSubject()
+                if subject is not None:
+                    subjectController.enrollSubject(student.id, subject)
             elif choice == 'r':
-                # remove subject by id
-                subjectView.removeSubject(currentStudent)
+                # remove 
+                removeSubject = student.removeSubject()
+                if removeSubject is not None:
+                    subjectController.removeSubject(student.id, removeSubject)
+
             elif choice == 's':
-                # show subjects
-                subjectView.showEnrolledSubjectList(currentStudent)
-                
+                # show
+                student.showSubjects()
             elif choice == 'x':
                 # exit
                 break
             else:
-                print("Invalid choice. Please try again.")
-    
+                print(f"{textColors.RED}\t\tInvalid choice. Please try again.{textColors.DEFAULT}")
