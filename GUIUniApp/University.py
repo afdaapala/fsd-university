@@ -20,7 +20,7 @@ class UniversityGUI:
       btn = tk.Button(root, text="A(dmin)", font='Helvetica 14 bold')
       btn.pack()
 
-      btn = tk.Button(root, text="S(tudent)", font='Helvetica 14 bold', command=student.viewMenu)
+      btn = tk.Button(root, text="S(tudent)", font='Helvetica 14 bold', command=student.inputLogin)
       btn.pack()
 
       btn = tk.Button(root, text="X(exit)", font='Helvetica 14 bold', command=lambda: root.quit())

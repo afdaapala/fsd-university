@@ -1,7 +1,7 @@
 from Styles.Style import textColors
 from Controllers.adminController import adminController
 from Controllers.studentController import studentController
-from Models.Database import Database
+from Database import Database
 
 class University:
     def __init__(self):
