@@ -18,9 +18,9 @@ class adminController:
                 isCleared = admin.removeAllStudents(students)
                 if isCleared:
                     Database.clear()
-                    
             elif choice == 'g':
                 # group students by grade
+                students = Database.read()
                 admin.viewStudentsbyGrade(students)
             elif choice == 'p':
                 # partition students by categories
@@ -33,8 +33,10 @@ class adminController:
                 
             elif choice == 's':
                 # Student List
-                students = admin.viewStudents(students)
+                # students = Database.read()
+                admin.viewStudents(students)
+                
             elif choice == 'x':
                 break
             else:
-                print(textColors.fail + "\tInvalid choice. Please try again." + textColors.DEFAULT)
+                print(textColors.RED + "\tInvalid choice. Please try again." + textColors.DEFAULT)

@@ -16,6 +16,7 @@ class studentController:
                     
             elif choice == 'r':
                 Student.registerStudent()
+                
             elif choice == 'x':
                 break
             else:

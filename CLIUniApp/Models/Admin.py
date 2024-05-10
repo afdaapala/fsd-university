@@ -2,6 +2,7 @@ from Models.Database import Database
 from Styles.Style import textColors
 import pickle
 import textwrap
+from Models.Student import Student
 
 class Admin:
     def __init__(self):
@@ -27,7 +28,7 @@ class Admin:
                 studentInGrade = ''
                 for student in students:
                     if student.calculateGrade() == grade:
-                        if studentInGrade != '':
+                        if studentInGrade != '': 
                             studentInGrade += ', ' + student.studentGrade()
                         else:
                             studentInGrade += student.studentGrade()
@@ -35,8 +36,7 @@ class Admin:
                     str = (f'\t{grade.ljust(2)} --> [{studentInGrade}]')
                     wrapper = textwrap.TextWrapper(subsequent_indent='\t\t',width=115) 
                     string = wrapper.fill(text=str)
-                    print(textColors.YELLOW +  string + textColors.DEFAULT)
-                    # print(Color.DEFAULT + f'\t{grade.ljust(2)} --> [{studentInGrade}]' + Color.DEFAULT)
+                    print(textColors.DEFAULT +  string + textColors.DEFAULT)
         else:
             emptyData = '\t\t< Nothing to Display >'
             print(textColors.DEFAULT +  emptyData + textColors.DEFAULT)
@@ -88,3 +88,9 @@ class Admin:
                 return True
             elif subchoice == 'N':
                 return False
+
+    def findStudentById(self, id, students):
+        for s in students:
+            if s.match(id):
+                return s
+        return None
