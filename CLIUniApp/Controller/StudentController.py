@@ -6,7 +6,7 @@ class StudentController:
     @staticmethod
     def read():
         return Database.read()
-            
+
     @staticmethod
     def findStudentByEmail(email):
         students = Database.read()
@@ -14,13 +14,13 @@ class StudentController:
             if student['email'] == email:
                 return student
         return None
-    
+
     @staticmethod
     def registerStudent(student):
         students = Database.read()
         students.append(student)
         Database.write(students)
-        
+
     @staticmethod
     def changePassword(id, newPassword):
         students = StudentController.read()
@@ -30,4 +30,3 @@ class StudentController:
                 student['password'] = newPassword
                 break
         Database.write(students)
-            

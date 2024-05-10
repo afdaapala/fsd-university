@@ -5,7 +5,7 @@ class SubjectController:
     @staticmethod
     def read():
         return Database.read()
-    
+
     @staticmethod
     def enrollSubject(id, subject):
         students = SubjectController.read()
@@ -18,7 +18,7 @@ class SubjectController:
             })
             break
         Database.write(students)
-        
+
     @staticmethod
     def removeSubject(id, removeSubject):
         students = SubjectController.read()
@@ -30,4 +30,3 @@ class SubjectController:
                 break
             break
         Database.write(students)
-  
