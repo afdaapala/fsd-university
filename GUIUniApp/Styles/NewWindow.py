@@ -1,16 +1,13 @@
 import tkinter as tk
-
 class NewWindow(tk.Toplevel):
   def __init__ (self, master, msg):
     super().__init__(master = master)
     self.title("Confirmation Window")
-    self.geometry("300x200")
-    label = tk.Label(self, text = msg, fg="white", bg="#323232",
-                     font="Helvetica 12 bold")
-    # x = master.winfo_x()
-    # y = master.winfo_y()
-    # self.geometry("+%d+%d" %(x+300, y))
-    self.configure(bg="#323232")
+    self.geometry("400x150")
+    self.configure(bg="#F5F5F5")
     self.resizable(False, False)
-    label.place(relx=0.5, rely=-.3, anchor="center")
-    label.pack()
+
+    label = tk.Label(self, text = msg, fg="#0f31db", bg="#F5F5F5",
+                     font="Helvetica 16 bold")
+    label.place(relx=0.5, rely=0.5, anchor="center")
+    

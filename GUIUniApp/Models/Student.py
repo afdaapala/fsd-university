@@ -37,7 +37,7 @@ class Student:
         root.resizable(False, False)
         
         image=tk.PhotoImage(file=filename).subsample(20) 
-        label=tk.Label(root, image=image)
+        label=tk.Label(root, image=image, bg=bgColor)
         label.grid(column=1, row=1)
 
         box = tk.LabelFrame(root, text="Sign In", bg=bgColor, fg="white",
@@ -75,13 +75,12 @@ class Student:
             return re.match(password_pattern, password.get()) is not None
 
         def clear():
-            emailField.delete(0, tk.END)
             passwordField.delete(0, tk.END)
 
         def login():
             registeredStudent = Student.findStudentByEmail(email.get())
             
-            if(not email.get() and not password.get()):
+            if (not email.get() or not password.get()):
                 info = "Empty login fields"
                 showerror(title="Login Error", message = info)
                 clear()
@@ -93,13 +92,13 @@ class Student:
                 info = "Incorrect email format"
                 showerror(title="Login Error", message = info)
                 clear()   
-            elif not(registeredStudent.email == email.get() or registeredStudent.password == password.get()):
+            elif not(registeredStudent.email == email.get() and registeredStudent.password == password.get()):
                 info="Student does not exist"
                 showerror(title="Login Error", message = info)
                 clear()
             else : 
+                NewWindow(root, f"Welcome {registeredStudent.name}")      
                 Student.handleSubject(registeredStudent)
-                NewWindow(root, "Correct email or password")      
                 clear()   
         
         loginBtn = tk.Button(box, text="Login", command=login)
@@ -115,11 +114,11 @@ class Student:
         root.configure(bg=bgColor)
         root.resizable(False, False)
 
-        enrollBtn = tk.Button(root, text="Enrol Subject", command=lambda: Student.enrollSubject(registeredStudent.subjects))
-        enrollBtn.grid(column=0, row=3, sticky=tk.E, padx=5, pady=5)
+        enrollBtn = tk.Button(root, text="Enrol Subject", highlightbackground="#5972ff", command=lambda: Student.enrollSubject(registeredStudent.subjects, root))
+        enrollBtn.place(relx=0.5, rely=0.4, anchor="center", width=100, height=50)
         
-        subjectBtn = tk.Button(root, text="Show Subject", command=lambda: Student.showSubjects(registeredStudent.subjects))
-        subjectBtn.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
+        subjectBtn = tk.Button(root, text="Show Subject",highlightbackground="#f2ab3a", command=lambda: Student.showSubjects(registeredStudent.subjects))
+        subjectBtn.place(relx=0.5, rely=0.6, anchor="center", width=100, height=50)
 
         root.mainloop()
 
@@ -140,7 +139,7 @@ class Student:
         root.mainloop()
     
     @staticmethod
-    def enrollSubject(subjects):
+    def enrollSubject(subjects, root):
         if len(subjects) == 4:
             info = "Students are allowed to enrol in 4 subjects only"
             showerror(title="Confirmation", message = info)
@@ -148,6 +147,7 @@ class Student:
     
         subject = Subject.generateSubject()
         subjects.append(subject)
+        NewWindow(root, f"Success Enrol Subject \n You are now enrolled in {len(subjects)} out of 4 subjects")
         return subject
 
         
