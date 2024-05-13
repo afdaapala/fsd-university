@@ -114,7 +114,7 @@ class Student:
     def showSubjects(self):
         print(f"{textColors.YELLOW}\t\tShowing {len(self.subjects)} subjects{textColors.DEFAULT}")
         for subject in self.subjects:
-            print(f"\t\t[ Subject:: {subject.id} -- mark = {subject.mark} -- grade = {subject.grade} ]")
+            print(f"\t\t[ Subject::{subject.id} -- mark = {subject.mark} -- grade =  {' ' if subject.grade != 'HD' else ''}{subject.grade} ]")
     
     def enrollSubject(self):
         if len(self.subjects) == 4:
