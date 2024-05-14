@@ -7,6 +7,8 @@ from Styles.NewWindow import NewWindow
 from Models.Database import Database
 
 bgColor = "#323232"
+enrollBtnColor = "#5972ff"
+subjectBtnColor = "#f2ab3a"
 
 current_directory = os.getcwd()
 filename = current_directory + "/GUIUniApp/Styles/uts.png"
@@ -114,10 +116,10 @@ class Student:
         root.configure(bg=bgColor)
         root.resizable(False, False)
 
-        enrollBtn = tk.Button(root, text="Enrol Subject", highlightbackground="#5972ff", command=lambda: Student.enrollSubject(registeredStudent.subjects, root))
+        enrollBtn = tk.Button(root, text="Enrol Subject", highlightbackground=enrollBtnColor, command=lambda: Student.enrollSubject(registeredStudent.subjects, root))
         enrollBtn.place(relx=0.5, rely=0.4, anchor="center", width=100, height=50)
         
-        subjectBtn = tk.Button(root, text="Show Subject",highlightbackground="#f2ab3a", command=lambda: Student.showSubjects(registeredStudent.subjects))
+        subjectBtn = tk.Button(root, text="Show Subject",highlightbackground=subjectBtnColor, command=lambda: Student.showSubjects(registeredStudent.subjects))
         subjectBtn.place(relx=0.5, rely=0.6, anchor="center", width=100, height=50)
 
         root.mainloop()
