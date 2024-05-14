@@ -78,7 +78,8 @@ class Student:
                 break
         Database.write(students)
     
-        # Function to check if the email is valid
+    
+    # Function to check if the email is valid
     @staticmethod
     def isValidEmail(email):
         return re.match(Student.email_pattern, email) is not None
@@ -138,17 +139,26 @@ class Student:
             total += subject.mark
         return total / len(self.subjects)
     
+    def findSubjectById(self, id):
+        for subject in self.subjects:
+            if subject.id == id:
+                return subject
+        return None
+    
     def removeSubject(self):
         if len(self.subjects) == 0:
             print(f"{textColors.YELLOW}\t\tThere is no subject to remove{textColors.DEFAULT}")
             return
         
-        removeSubject = self.subjects.pop()
-        print(f"\t\tRemove Subject by ID: {removeSubject.id}")
-        print(f"{textColors.YELLOW}\t\tDropping Subject-{removeSubject.id}{textColors.DEFAULT}")
+        inputId = input("\t\tRemove Subject by ID: ")
+        removedSubject = self.findSubjectById(inputId)
+
+        self.subjects.remove(removedSubject)
+
+        print(f"{textColors.YELLOW}\t\tDropping Subject-{removedSubject.id}{textColors.DEFAULT}")
         
         print(f"{textColors.YELLOW}\t\tYou are now enrolled in {len(self.subjects)} out of 4 subjects{textColors.DEFAULT}")
-        return removeSubject
+        return removedSubject
     
     def changePassword(self):
         print(f"{textColors.YELLOW}\t\tUpdating Password{textColors.DEFAULT}")
