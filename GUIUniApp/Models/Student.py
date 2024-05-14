@@ -3,12 +3,9 @@ from tkinter.messagebox import showerror
 import re
 import os
 from Models.Subject import Subject
-from Styles.NewWindow import NewWindow
+from View.NewWindow import NewWindow
 from Models.Database import Database
-
-bgColor = "#323232"
-enrollBtnColor = "#5972ff"
-subjectBtnColor = "#f2ab3a"
+from Styles.Style import Colors
 
 current_directory = os.getcwd()
 filename = current_directory + "/GUIUniApp/Styles/uts.png"
@@ -35,25 +32,25 @@ class Student:
         root=tk.Tk()
         root.geometry("500x500")
         root.title("Student System")
-        root.configure(bg=bgColor)
+        root.configure(bg=Colors.bgColor)
         root.resizable(False, False)
         
         image=tk.PhotoImage(file=filename).subsample(20) 
-        label=tk.Label(root, image=image, bg=bgColor)
+        label=tk.Label(root, image=image, bg=Colors.bgColor)
         label.grid(column=1, row=1)
 
-        box = tk.LabelFrame(root, text="Sign In", bg=bgColor, fg="white",
+        box = tk.LabelFrame(root, text="Sign In", bg=Colors.bgColor, fg="white",
                             padx=20, pady=60, font='Helvetica 10 bold')
         box.columnconfigure(0, weight=1)
         box.columnconfigure(1, weight=2)
         box.place(rely=0.5, relx=0.5, anchor='center')
 
         emailLbl = tk.Label(box, text="Email: ", justify="left", fg="white",
-                            font='Helvetica 12 bold', bg=bgColor)
+                            font='Helvetica 12 bold', bg=Colors.bgColor)
         emailLbl.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
 
         passwordLbl = tk.Label(box, text='Password: ', fg="white",
-                              font='Helvetica 12 bold', bg=bgColor)
+                              font='Helvetica 12 bold', bg=Colors.bgColor)
         passwordLbl.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
 
         email = tk.StringVar()
@@ -90,8 +87,8 @@ class Student:
                 info = "Incorrect student credentials"
                 showerror(title="Login Error", message = info)
                 clear()
-            elif not(isValidEmail() or isValidPassword()):
-                info = "Incorrect email format"
+            elif not isValidEmail() or not isValidPassword():
+                info = "Incorrect email or password format"
                 showerror(title="Login Error", message = info)
                 clear()   
             elif not(registeredStudent.email == email.get() and registeredStudent.password == password.get()):
@@ -113,13 +110,13 @@ class Student:
         root=tk.Tk()
         root.geometry("500x300")
         root.title("Enrol Subject")
-        root.configure(bg=bgColor)
+        root.configure(bg=Colors.bgColor)
         root.resizable(False, False)
 
-        enrollBtn = tk.Button(root, text="Enrol Subject", highlightbackground=enrollBtnColor, command=lambda: Student.enrollSubject(registeredStudent.subjects, root))
+        enrollBtn = tk.Button(root, text="Enrol Subject", highlightbackground=Colors.enrollBtnColor, command=lambda: Student.enrollSubject(registeredStudent.subjects, root))
         enrollBtn.place(relx=0.5, rely=0.4, anchor="center", width=100, height=50)
         
-        subjectBtn = tk.Button(root, text="Show Subject",highlightbackground=subjectBtnColor, command=lambda: Student.showSubjects(registeredStudent.subjects))
+        subjectBtn = tk.Button(root, text="Show Subject",highlightbackground=Colors.subjectBtnColor, command=lambda: Student.showSubjects(registeredStudent.subjects))
         subjectBtn.place(relx=0.5, rely=0.6, anchor="center", width=100, height=50)
 
         root.mainloop()
@@ -129,7 +126,7 @@ class Student:
         root=tk.Tk()
         root.geometry("500x300")
         root.title("Show Subject")
-        root.configure(bg=bgColor)
+        root.configure(bg=Colors.bgColor)
         root.resizable(False, False)
         subjectList = tk.Listbox(root)
         

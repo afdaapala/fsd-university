@@ -1,8 +1,5 @@
-from Models.Database import Database
 from Styles.Style import textColors
-import pickle
 import textwrap
-from Models.Student import Student
 
 class Admin:
     def __init__(self):
